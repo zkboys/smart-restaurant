@@ -22,18 +22,24 @@ npm run pro:mp
 访问 http://localhost:3080
 ```
 
-## 开发热启动使用[nodemon](https://nodemon.io/)
-nodemon debug不能停在断点，无法调试
-/Users/wangshubin/.nvm/versions/node/v7.2.1/bin/nodemon
-/Users/wangshubin/.nvm/versions/node/v7.2.1/bin/supervisor
+## 开发热启动使用[nodemon](https://nodemon.io/)启动项目
+存在问题：
 
-## 查看端口占用
-```
-lsof -i:3000
-```
+1. nodemon debug不能停在断点，无法调试
+1. 如果直接使用nodemon代替node启动，可以挺在断点位置，但是修改文件之后服务死掉
+
+脚本位置：
+
+1. /Users/wangshubin/.nvm/versions/node/v7.2.1/bin/nodemon
+1. /Users/wangshubin/.nvm/versions/node/v7.2.1/bin/supervisor
+
+参考资料：
+
+1. http://stackoverflow.com/questions/19180702/how-can-i-run-nodemon-from-within-webstorm
+1. https://vcfvct.wordpress.com/2015/02/13/debug-nodejs-with-nodemon-and-intellij/
 
 
-## 使用pm2
+## 正式环境，使用pm2启停项目
 
 ```
 // 启动 mp后端
@@ -43,4 +49,8 @@ npm run pro:mp
 pm2 stop all
 
 ```
+
+## 常用命名
+
+1. 查看端口占用： lsof -i:3000
 
