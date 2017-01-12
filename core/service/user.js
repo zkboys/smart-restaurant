@@ -130,6 +130,7 @@ exports.deleteUserById = async function (userId) {
     return await UserProxy.delete(userId);
 };
 
+
 exports.toggleUserLock = async function (userId, isLocked) {
     if (isLocked) {
         return await UserProxy.unlock(userId);

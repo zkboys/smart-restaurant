@@ -22,6 +22,11 @@ npm run pro:mp
 访问 http://localhost:3080
 ```
 
+## 开发热启动使用[nodemon](https://nodemon.io/)
+nodemon debug不能停在断点，无法调试
+/Users/wangshubin/.nvm/versions/node/v7.2.1/bin/nodemon
+/Users/wangshubin/.nvm/versions/node/v7.2.1/bin/supervisor
+
 ## 查看端口占用
 ```
 lsof -i:3000

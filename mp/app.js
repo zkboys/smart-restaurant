@@ -129,7 +129,6 @@ if (config.debug) {
     });
 }
 
-
 if (!module.parent) {
     app.listen(config.port, function () {
         logger.info('NodeClub listening on port', config.port);

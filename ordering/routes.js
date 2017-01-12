@@ -10,6 +10,7 @@ const requireAuthenticated = true;
 router.get('/v1/oauth/sign_in.json', signatured(), oauth.signIn);
 router.get('/v1/version.json', app.checkVersion);
 router.get('/v1/user.json', authenticated, signatured(requireAuthenticated), user.getUserById);
+router.get('/v1/users.json', authenticated, signatured(requireAuthenticated), user.getAllUsers);
 router.get('/v1/oauth/refresh_token.json', signatured(), oauth.refreshToken);
 
 module.exports = router;
