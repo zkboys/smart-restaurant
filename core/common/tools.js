@@ -53,3 +53,15 @@ exports.md5 = function (str) {
     return str;
 }
 
+/**
+ * 获取 min～max之间的一个随机整数
+ * @param min
+ * @param max
+ * @returns {*}
+ */
+exports.getRandomNum = function (min, max) {
+    const range = max - min;
+    const rand = Math.random();
+    return (min + Math.round(rand * range));
+}
+
