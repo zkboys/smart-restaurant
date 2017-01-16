@@ -45,7 +45,7 @@ exports.resExtend = function (req, res, next) {
     };
 
     res.sendSuccess = function () {
-        return res.send({success: true});
+        return res.send({result: true});
     };
     next();
 };

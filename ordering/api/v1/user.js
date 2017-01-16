@@ -12,6 +12,14 @@ exports.getUserById = controllerDecorator(async function (req, res) {
     });
 });
 
+exports.getCurrentLoginUser = controllerDecorator(async function (req, res) {
+    const user = req.currentUser; // 当前登录用户
+    res.send({
+        name: user.name,
+        loginname: user.loginname
+    });
+});
+
 exports.getAllUsers = controllerDecorator(async function (req, res) {
     const mchId = req.query.mchId;
     const storeId = req.query.storeId;
@@ -20,7 +28,6 @@ exports.getAllUsers = controllerDecorator(async function (req, res) {
 
     // TODO 根据mchId 和 storeId 获取用户列表
     const result = await UserService.getByPage();
-    console.log(result.users);
     result.users.forEach(user => user.userId = user._id);
     res.send({results: result.users});
 });
