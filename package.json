@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev:mp": "cross-env PORT=3001 cross-env NODE_ENV=development nodemon --watch ./ -i ./mp/assets --harmony ./mp/app.js",
-    "dev:ordering": "cross-env PORT=3002 cross-env NODE_ENV=development nodemon --watch ./ -i ./mp/assets --harmony ./ordering/app.js",
     "pro:mp": "pm2 start ./mp/process.json",
+    "dev:ordering": "cross-env PORT=3002 cross-env NODE_ENV=development nodemon --watch ./ -i ./mp/assets --harmony ./ordering/app.js",
     "pro:ordering": "pm2 start ./mp/process.json",
+    "dev:bops": "cross-env PORT=3003 cross-env NODE_ENV=development nodemon --watch ./ -i ./mp/assets --harmony ./bops/app.js",
+    "pro:bops": "pm2 start ./bops/process.json",
     "test": "cross-env NODE_ENV=test ./node_modules/mocha/bin/mocha --harmony --reporter spec -r should -r test/env --timeout 10000 test/proxy/user.test.js"
   },
   "repository": {

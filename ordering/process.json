@@ -1,12 +1,12 @@
 {
   "apps": [
     {
-      "name": "app-3090",
+      "name": "app-3020",
       "script": "./ordering/app.js",
       "node_args": "--harmony",
       "env": {
         "NODE_ENV": "production",
-        "PORT": 3080
+        "PORT": 3020
       },
       "watch": true,
       "log_date_format": "YYYY-MM-DD HH:mm Z"
