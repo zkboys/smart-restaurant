@@ -8,6 +8,7 @@ const FormItem = Form.Item;
 class MenuEdit extends Component {
 
     static defaultProps = {
+        modify: false,
         menusTreeData: [],
         menu: {
             key: '',
@@ -100,7 +101,7 @@ class MenuEdit extends Component {
     };
 
     render() {
-        let {form: {getFieldDecorator}, menu, showButtons, formItemLayout} = this.props;
+        let {form: {getFieldDecorator}, menu, showButtons, formItemLayout, modify} = this.props;
 
         const keyDecorator = getFieldDecorator('key', {
             initialValue: menu.key,
@@ -134,7 +135,7 @@ class MenuEdit extends Component {
                     hasFeedback
                 >
                     {keyDecorator(
-                        <Input placeholder="唯一不可重复。"/>
+                        <Input placeholder="唯一不可重复。" disabled={modify}/>
                     )}
                 </FormItem>
                 <FormItem

@@ -341,7 +341,7 @@ class Menu extends Component {
                                     </div>
                                 </Col>
                             </Row>
-                            <MenuEdit menusTreeData={menusTreeData} menu={menu} onChange={this.handleFormChange}/>
+                            <MenuEdit menusTreeData={menusTreeData} menu={menu} modify onChange={this.handleFormChange}/>
                         </Col>
                         <Col span={8}>
                             <div className="menu-tool-bar" style={{marginBottom: 16}}>
