@@ -19,7 +19,6 @@ exports.resExtend = function (req, res, next) {
     };
 
     res.sendError = function (options) {
-        console.log(options);
         if (typeof options === 'string') {
             return res.status(400).send({error: null, message: options});
         }

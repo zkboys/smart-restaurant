@@ -7,6 +7,8 @@ const table = require('./api/v1/table');
 
 const merchant = require('./api/v1/merchant');
 
+const dish = require('./api/v1/dish');
+
 const signatured = require('../core/middlewares/signatured');
 const authenticated = require('../core/middlewares/authenticated');
 
@@ -23,5 +25,9 @@ router.get('/v1/table_regions.json', authenticated, signatured(requireAuthentica
 router.put('/v1/clean_table.json', authenticated, signatured(requireAuthenticated), table.cleanTable);
 
 router.get('/v1/merchants.json', authenticated, signatured(requireAuthenticated), merchant.getMerchants);
+
+
+router.get('/v1/dishes.json', authenticated, signatured(requireAuthenticated), dish.getAllDishes);
+
 
 module.exports = router;
