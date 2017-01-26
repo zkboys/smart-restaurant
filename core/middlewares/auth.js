@@ -86,8 +86,8 @@ exports.authUser = async function (req, res, next) {
         return next();
     }
     try {
-        const user = await UserProxy.getUserById(user_id);
-        const role = await RoleProxy.getRoleById(user.role_id);
+        const user = await UserProxy.getById(user_id);
+        const role = await RoleProxy.getById(user.role_id);
         if (role) {
             user.permissions = role.permissions;
         }

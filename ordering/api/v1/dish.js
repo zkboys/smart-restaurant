@@ -18,7 +18,7 @@ exports.getAllDishes = controllerDecorator(async function (req, res) {
     for (let i = 0; i < 5; i++) {
         const dishes = [];
 
-        for (let j = 0; j < tools.getRandomNum(5, 20); j++) {
+        for (let j = 0; j < tools.getRandomNum(15, 20); j++) {
             dishes.push({
                 id: j + 'abc',
                 name: `${i}-${j} 测试菜`,

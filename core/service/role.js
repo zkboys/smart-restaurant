@@ -3,12 +3,12 @@ const ServiceError = require('./service-error');
 const message = require('../properties').errorMessages;
 
 exports.getRoleById = async function (roleId) {
-    return await RoleProxy.getRoleById(roleId);
+    return await RoleProxy.getById(roleId);
 };
 
 exports.getRolesByPage = async function (currentPage = 1, pageSize = 10, queries = []) {
-    const roles = await RoleProxy.getRolesByPage(currentPage, pageSize, queries);
-    const totalCount = await RoleProxy.getRolesCountByQuery(queries);
+    const roles = await RoleProxy.getByPage(currentPage, pageSize, queries);
+    const totalCount = await RoleProxy.getCountByQuery(queries);
     return {roles, totalCount}
 };
 exports.getRoleByNameFromAllRoles = async function (roleName) {
@@ -16,7 +16,7 @@ exports.getRoleByNameFromAllRoles = async function (roleName) {
 };
 
 exports.deleteRoleById = async function (roleId) {
-    return await RoleProxy.delete(roleId);
+    return await RoleProxy.deleteById(roleId);
 };
 
 exports.updateRole = async function (role) {
@@ -28,5 +28,5 @@ exports.addRole = async function (role) {
         throw new ServiceError(message.roleNameCanNotBeNull);
     }
 
-    return await RoleProxy.addRole(role);
+    return await RoleProxy.save(role);
 };

@@ -65,7 +65,7 @@ exports.updatePass = async function (userId, oldPass, newPass, newPassRepeat) {
         throw new ServiceError(message.towPassIsDifferent);
     }
 
-    const user = await UserProxy.getUserById(userId);
+    const user = await UserProxy.getById(userId);
 
     if (!user) {
         throw new ServiceError(message.userIsNotExisted);
@@ -85,7 +85,7 @@ exports.updatePass = async function (userId, oldPass, newPass, newPassRepeat) {
 }
 
 exports.resetUserPass = async function (userId) {
-    const user = await UserProxy.getUserById(userId);
+    const user = await UserProxy.getById(userId);
 
     if (!user) {
         throw new ServiceError(message.userIsNotExisted);
@@ -99,7 +99,7 @@ exports.resetUserPass = async function (userId) {
 }
 
 exports.getUserPermissions = async function (user) {
-    const role = await RoleProxy.getRoleById(user.role_id);
+    const role = await RoleProxy.getById(user.role_id);
 
     if (role) {
         return role.permissions;
@@ -113,12 +113,12 @@ exports.getUserMenus = async function (user) {
 };
 
 exports.getUserById = async function (userId) {
-    return await UserProxy.getUserById(userId);
+    return await UserProxy.getById(userId);
 };
 
 exports.getByPage = async function (currentPage = 1, pageSize = 10, queries = []) {
-    const users = await UserProxy.getUsersByPage(currentPage, pageSize, queries);
-    const totalCount = await UserProxy.getUsersCountByQuery(queries);
+    const users = await UserProxy.getByPage(currentPage, pageSize, queries);
+    const totalCount = await UserProxy.getCountByQuery(queries);
     return {users, totalCount}
 };
 
@@ -127,7 +127,7 @@ exports.getUserByLoginNameFromAllUsers = async function (loginName) {
 };
 
 exports.deleteUserById = async function (userId) {
-    return await UserProxy.delete(userId);
+    return await UserProxy.deleteById(userId);
 };
 
 
@@ -171,7 +171,7 @@ exports.addUser = async function (user) {
     user.pass = initHashedPass;
     user.salt = salt;
 
-    return await UserProxy.addUser(user);
+    return await UserProxy.save(user);
 }
 
 
