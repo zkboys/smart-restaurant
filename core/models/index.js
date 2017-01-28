@@ -15,20 +15,38 @@ mongoose.plugin(BaseModel);
 
 // models
 require('./menu');
-require('./role');
-require('./organization');
-
-require('./user');
-require('./oauth');
-require('./oauth_token');
-require('./version_upgrade');
-
-
 exports.Menu = mongoose.model('Menu');
+
+require('./oauth');
+exports.Oauth = mongoose.model('Oauth');
+
+require('./oauth_token');
+exports.OauthToken = mongoose.model('OauthToken');
+
+require('./version_upgrade');
+exports.VersionUpgrade = mongoose.model('VersionUpgrade');
+
+require('./role');
 exports.Role = mongoose.model('Role');
+
+require('./organization');
 exports.Organization = mongoose.model('Organization');
 
+require('./user');
 exports.User = mongoose.model('User');
-exports.Oauth = mongoose.model('Oauth');
-exports.OauthToken = mongoose.model('OauthToken');
-exports.VersionUpgrade = mongoose.model('VersionUpgrade');
+
+require('./mp_user');
+exports.MpUser = mongoose.model('MpUser');
+
+require('./mp_account');
+exports.MpAccount = mongoose.model('MpAccount');
+
+require('./mp_password');
+exports.MpPassword = mongoose.model('MpPassword');
+
+
+
+
+
+
+

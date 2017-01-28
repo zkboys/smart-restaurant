@@ -1,4 +1,4 @@
-const UserModel = require('../models').User;
+const Model = require('../models').User;
 const BaseProxy = require('./base_proxy');
 
 class UserProxy extends BaseProxy {
@@ -23,5 +23,5 @@ class UserProxy extends BaseProxy {
     }
 }
 
-exports = module.exports = new UserProxy(UserModel);
+exports = module.exports = new UserProxy(Model);
 

@@ -1,5 +1,5 @@
 const config = require('../config');
-const MenuModel = require('../models').Menu;
+const Model = require('../models').Menu;
 const BaseProxy = require('./base_proxy');
 
 class MenuProxy extends BaseProxy {
@@ -20,5 +20,5 @@ class MenuProxy extends BaseProxy {
 
 }
 
-exports = module.exports = new MenuProxy(MenuModel);
+exports = module.exports = new MenuProxy(Model);
 
