@@ -7,6 +7,7 @@ const FormItem = Form.Item;
 class FormComponent extends Component {
 
     static defaultProps = {
+        formLayout: 'horizontal', // vertical inline
         width: '100%',
         showButtons: true,
         onSubmit() {
@@ -47,7 +48,7 @@ class FormComponent extends Component {
                 return;
             }
             if (onSubmit) {
-                onSubmit(values);
+                onSubmit(values, e);
             }
             this.handleReset();
         });
@@ -125,7 +126,15 @@ class FormComponent extends Component {
     }
 
     render() {
-        let {form: {getFieldDecorator}, width, showButtons, formItemLayout} = this.props;
+        let {form: {getFieldDecorator}, width, showButtons, formItemLayout, formLayout} = this.props;
+
+        formItemLayout = formLayout === 'horizontal' ? formItemLayout : null;
+
+        const buttonItemLayout = formLayout === 'horizontal' ? {
+                wrapperCol: {span: formItemLayout.wrapperCol.span, offset: formItemLayout.labelCol.span},
+            } : null;
+        const layoutProps = {[formLayout]: true};
+
 
         const formItems = this.formItems.map(item => {
             const label = `${item.label}：`;
@@ -149,11 +158,11 @@ class FormComponent extends Component {
         });
 
         return (
-            <Form horizontal onSubmit={this.handleSubmit} onReset={this.handleReset} style={{width}}>
+            <Form  {...layoutProps} onSubmit={this.handleSubmit} onReset={this.handleReset} style={{width}}>
                 {formItems}
                 {
                     showButtons ?
-                        <FormItem wrapperCol={{offset: formItemLayout.labelCol.span}}>
+                        <FormItem {...buttonItemLayout}>
                             <Button type="ghost" style={{marginRight: 8}} htmlType="reset">重置</Button>
                             <Button type="primary" htmlType="submit">确定</Button>
                         </FormItem>

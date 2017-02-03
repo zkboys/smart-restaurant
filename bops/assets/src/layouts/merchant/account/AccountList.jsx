@@ -4,7 +4,7 @@ import './style.less';
 import PaginationComponent from '../../../components/pagination/PaginationComponent';
 import QueryBar from '../../../components/QueryBar';
 import Operator from '../../../components/Operator';
-import AccountEdit from '../../../components/FormComponent';
+import FormComponent from '../../../components/FormComponent';
 
 const FormItem = Form.Item;
 
@@ -230,13 +230,9 @@ class AccountList extends Component {
                         onVisibleChange={accountPopoverVisible => this.setState({accountPopoverVisible})}
                         trigger="click"
                         content={
-                            <AccountEdit
+                            <FormComponent
                                 formItems={this.accountFormItems}
                                 width={300}
-                                formItemLayout={{
-                                    labelCol: {span: 6},
-                                    wrapperCol: {span: 18},
-                                }}
                                 onSubmit={this.handleAddAccount}
                             />
                         }>
