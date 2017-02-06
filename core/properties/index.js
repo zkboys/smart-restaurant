@@ -10,6 +10,7 @@ exports.errorMessages = {
     mpAccountInvalid: [1007, '账号不合法'],
     mpAccountLengthInvalid: [1008, '账号至少需要2个字符'],
     mpAccountIsUsed: [1009, '账号名已被占用'],
+    mpAccountIsNotExisted: [1010, '账号不存在'],
 
     passCanNotBeNull: [2000, '密码不能为空'],
     passInvalid: [2001, '密码不可用'],

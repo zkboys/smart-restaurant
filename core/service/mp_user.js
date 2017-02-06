@@ -11,6 +11,10 @@ const message = require('../properties').errorMessages;
 
 const trim = _.trim;
 
+exports.getAccountByAccount = async function (account) {
+    return await MpAccountProxy.getByAccount(account);
+}
+
 exports.add = async function (mpUser) {
     const account = trim(mpUser.account);
 

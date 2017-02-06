@@ -7,3 +7,8 @@ exports.addAndSave = controllerDecorator(async function (req, res, next) {
     res.send(savedMpUser);
 });
 
+exports.getAccountByAccount = controllerDecorator(async function (req, res, next) {
+    const account = req.params.account;
+    const existedAccount = await MpUserService.getAccountByAccount(account);
+    res.send(existedAccount || false);
+});

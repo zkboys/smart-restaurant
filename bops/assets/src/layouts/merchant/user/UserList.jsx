@@ -6,6 +6,8 @@ import QueryBar from '../../../components/QueryBar';
 import Operator from '../../../components/Operator';
 import FormComponent from '../../../components/FormComponent';
 
+import ValidationRule from '../../../services/validation-rule';
+
 const FormItem = Form.Item;
 
 class AccountList extends Component {
@@ -210,6 +212,11 @@ class AccountList extends Component {
             field: 'account',
             label: '账号',
             placeholder: '请输入手机或邮箱',
+            fieldDecorator: {
+                rules: [
+                    ValidationRule.checkMpAccountExist(),
+                ],
+            },
         }
     ];
 

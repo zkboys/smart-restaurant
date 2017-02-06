@@ -50,7 +50,7 @@ class FormComponent extends Component {
             if (onSubmit) {
                 onSubmit(values, e);
             }
-            this.handleReset();
+            // this.handleReset();
         });
     };
 

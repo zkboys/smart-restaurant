@@ -44,6 +44,35 @@ export default {
             },
         };
     },
+
+    /**
+     * 判断登录名是否重复
+     * @param ignoreValues {Array} 这些名字不进行检测，用于修改的情况。
+     * @returns {*}
+     */
+    checkMpAccountExist(ignoreValues = []) {
+        if (typeof ignoreValues === 'string') {
+            ignoreValues = [ignoreValues];
+        }
+        return {
+            validator(rule, value, callback) {
+                if (!value || ignoreValues.indexOf(value) > -1) {
+                    return callback();
+                }
+                Request
+                    .get(`/merchant/account/${value}`)
+                    .then(data => {
+                        if (data && value === data.account) {
+                            return callback([new Error('抱歉，该账号已被占用！')]);
+                        }
+                        callback();
+                    })
+                    .catch(err => {
+                        return callback([new Error((err && err.body && err.body.message) || '未知系统错误')]);
+                    });
+            },
+        };
+    },
     /**
      * 判断角色名是否重复
      * @param ignoreValues {Array} 这些名字不进行检测，用于修改的情况。

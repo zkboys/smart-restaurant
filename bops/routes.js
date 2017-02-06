@@ -59,9 +59,8 @@ router.put('/api/organization/roles', userRequired, permission('role-update'), r
 router.delete('/api/organization/roles', userRequired, permission('role-delete'), role.delete);
 
 // mp account
-
-router.post('/api/merchant/accounts', userRequired, permission('mp-user-add'), mpUser.addAndSave);
-
+router.post('/api/merchant/users', userRequired, permission('mp-user-add'), mpUser.addAndSave);
+router.get('/api/merchant/account/:account', userRequired, mpUser.getAccountByAccount);
 
 router.get('*', userRequired, function (req, res, next) {
     //  根据约定 区分不同得请求类型，返回不同的数据。
