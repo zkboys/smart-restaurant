@@ -1,15 +1,15 @@
 import {handleActions} from 'redux-actions';
 import _ from 'lodash';
-import {ADD_MP_USER} from '../../constants/actionTypes';
+import {ADD_MP_USER, GET_MP_USERS_BY_PARAMS} from '../../constants/actionTypes';
 
 let initialState = {
     currentPage: 1,
     pageSize: 10,
-    savingOrUpdating: false,
-    getting: false,
-    deleting: {},
-    resetting: {},
-    accounts: {
+    savingOrUpdatingMpUser: false,
+    gettingMpUser: false,
+    deletingMpUser: {},
+    resettingMpUser: {},
+    mpUsers: {
         results: [],
         totalCount: 0,
     },
@@ -19,22 +19,41 @@ export default handleActions({
     [ADD_MP_USER](state, action) {
         const {meta = {}, error, payload} = action;
         const {sequence = {}} = meta;
-        const savingOrUpdating = sequence.type === 'start';
+        const savingOrUpdatingMpUser = sequence.type === 'start';
 
-        if (savingOrUpdating || error) {
+        if (savingOrUpdatingMpUser || error) {
             return {
                 ...state,
-                savingOrUpdating,
+                savingOrUpdatingMpUser,
             };
         }
 
-        const accounts = _.cloneDeep(state.accounts);
-        accounts.results.unshift(payload);
+        const mpUsers = _.cloneDeep(state.mpUsers);
+        console.log(payload);
+        mpUsers.results.unshift(payload);
 
         return {
             ...state,
-            savingOrUpdating,
-            accounts,
+            savingOrUpdatingMpUser,
+            mpUsers,
+        };
+    },
+    [GET_MP_USERS_BY_PARAMS](state, action) {
+        const {meta = {}, error, payload} = action;
+        const {sequence = {}, params} = meta;
+        const gettingMpUser = sequence.type === 'start';
+        if (gettingMpUser || error) {
+            return {
+                ...state,
+                gettingMpUser,
+            };
+        }
+        return {
+            ...state,
+            mpUsers: payload,
+            gettingMpUser,
+            currentPage: params.currentPage,
+            pageSize: params.pageSize,
         };
     },
 }, initialState);

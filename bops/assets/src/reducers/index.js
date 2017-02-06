@@ -9,8 +9,10 @@ import organizationRole from './organization/role';
 import organization from './organization/organization';
 import organizationEdit from './organization/organization-edit';
 import menuEdit from './dev/menu-edit';
+import mpUser from './merchant/user';
 
 export default combineReducers({
+    mpUser,
     menuEdit,
     organizationEdit,
     organization,

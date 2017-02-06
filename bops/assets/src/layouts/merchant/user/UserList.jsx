@@ -20,6 +20,10 @@ class AccountList extends Component {
         }
     };
 
+    componentDidMount() {
+        this.search();
+    }
+
     accountColumns = [
         {title: '账号', dataIndex: 'account', key: 'account'},
         {title: '用户名', dataIndex: 'name', key: 'name'},
@@ -177,8 +181,8 @@ class AccountList extends Component {
             pageSize,
             ...args,
         };
-        console.log(params);
-        // TODO：查询
+
+        actions.getMpUsersByParams(params);
     }
 
     handleAddAccount = (values) => {
@@ -227,8 +231,9 @@ class AccountList extends Component {
         }
     ];
 
+
     render() {
-        const {form: {getFieldDecorator}, pageSize, currentPage, totalCount} = this.props;
+        const {form: {getFieldDecorator}, pageSize, currentPage, mpUsers: {results: users, totalCount},} = this.props;
         const {accountPopoverVisible} = this.state;
         return (
             <div className="merchant-list">
@@ -265,8 +270,9 @@ class AccountList extends Component {
                 </div>
                 <Table
                     columns={this.accountColumns}
-                    dataSource={this.accountData}
+                    dataSource={users}
                     pagination={false}
+                    rowKey={record => record._id}
                     expandedRowRender={record => (
                         <Table
                             columns={this.mchColumns}
@@ -298,5 +304,6 @@ export const LayoutComponent = Form.create()(AccountList);
 export function mapStateToProps(state) {
     return {
         ...state.app,
+        ...state.mpUser,
     };
 }

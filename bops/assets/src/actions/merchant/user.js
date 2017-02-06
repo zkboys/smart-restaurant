@@ -1,9 +1,9 @@
 import {createAction} from 'redux-actions';
-import {ADD_MP_USER} from '../../constants/actionTypes';
-import * as accountService from '../../services/merchant/user';
+import {ADD_MP_USER, GET_MP_USERS_BY_PARAMS} from '../../constants/actionTypes';
+import * as mpUserService from '../../services/merchant/user';
 
 export const addMpUser = createAction(ADD_MP_USER,
-    async(params) => await accountService.addAccount(params),
+    async(params) => await mpUserService.add(params),
     (params, resolved, rejected) => {
         return {
             params,
@@ -14,3 +14,13 @@ export const addMpUser = createAction(ADD_MP_USER,
     }
 );
 
+export const getMpUsersByParams = createAction(GET_MP_USERS_BY_PARAMS,
+    async(params) => await mpUserService.getByParams(params),
+    (params, resolved, rejected) => {
+        return {
+            params,
+            resolved,
+            rejected,
+        };
+    }
+);

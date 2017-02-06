@@ -23,4 +23,19 @@ module.exports = function (schema) {
         this.update_at = new Date();
         next();
     });
+
+    // Duplicate the ID field.
+    schema.virtual('id').get(function () {
+        return this._id.toHexString();
+    });
+
+    // Ensure virtual fields are serialised.
+    schema.set('toJSON', {
+        virtuals: true
+    });
+
+    // Ensure virtual fields are serialised.
+    schema.set('toObject', {
+        virtuals: true
+    });
 };

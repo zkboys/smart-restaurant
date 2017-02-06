@@ -63,3 +63,4 @@ export const SAVE_MENU = 'SAVE_MENU';
 // mp account
 
 export const ADD_MP_USER = 'ADD_MP_USER';
+export const GET_MP_USERS_BY_PARAMS = 'GET_MP_USERS_BY_PARAMS';

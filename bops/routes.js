@@ -60,6 +60,7 @@ router.delete('/api/organization/roles', userRequired, permission('role-delete')
 
 // mp account
 router.post('/api/merchant/users', userRequired, permission('mp-user-add'), mpUser.addAndSave);
+router.get('/api/merchant/users', userRequired, permission('mp-user-search'), mpUser.getByPage);
 router.get('/api/merchant/account/:account', userRequired, mpUser.getAccountByAccount);
 
 router.get('*', userRequired, function (req, res, next) {

@@ -15,6 +15,32 @@ exports.getAccountByAccount = async function (account) {
     return await MpAccountProxy.getByAccount(account);
 }
 
+
+exports.getByPage = async function (currentPage = 1, pageSize = 10, queries = []) {
+    const accounts = await MpAccountProxy.getByPage(currentPage, pageSize, queries);
+    const totalCount = await MpAccountProxy.getCountByQuery(queries);
+    if (!accounts) {
+        return {
+            results: [],
+            totalCount: 0,
+        }
+    }
+
+    const userIds = accounts.map(acc => acc.user_id);
+    const users = await MpUserProxy.getByIds(userIds);
+    const results = accounts.map(account => {
+        console.log(account);
+        const user = users.find(u => u._id == account.user_id);
+        return {
+            _id: account._id,
+            account: account.account,
+            name: user.name,
+            mchCount: 0, // TODO: 获取品牌，门店相关信息
+        }
+    });
+    return {results, totalCount}
+};
+
 exports.add = async function (mpUser) {
     const account = trim(mpUser.account);
 
@@ -59,8 +85,14 @@ exports.add = async function (mpUser) {
         password: initHashedPass,
         salt: salt,
     });
+    savedMpUser.account = savedMpAccount.account;
 
-    return savedMpUser;
+    return {
+        _id: savedMpUser._id,
+        name: savedMpUser.name,
+        account: savedMpAccount.account,
+        mchCount: 0,
+    };
 }
 
 
