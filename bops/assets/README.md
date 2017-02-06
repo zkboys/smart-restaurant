@@ -520,6 +520,8 @@ export default undoable(organization, {
     import {Link} from 'react-router'
     <Link to="/xxxxx">XXXXX</Link>
     ```
+- 一级菜单必须设置图标，二级以后不设置图标
+- 菜单修改，需要重新登录才能显示，（登录之后会根据用户权限获取菜单）
 
 ### 前端路由结构规范
 *特殊情况，不能按照规范实现，与各位leader商榷*

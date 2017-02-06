@@ -27,10 +27,10 @@ class NavBar extends Component {
         hidden: PropTypes.bool,
     }
 
-    onToggle = (info) => {
+    onToggle = (openKeys) => {
         this.setState({
             // openKeys: info.open ? info.keyPath : info.keyPath.slice(1), // 同时关闭其他
-            openKeys: info.openKeys,
+            openKeys: openKeys,
         });
     }
 
@@ -98,18 +98,17 @@ class NavBar extends Component {
                         openKeys={openKeys}
                         selectedKeys={[selectedKeys]}
                         onOpenChange={this.onToggle}
-                        mode={sidebarMode}
+                        mode="inline"
                     >
                         {this.renderMenus()}
                     </Menu>
                     <Menu
                         style={{display: sidebarMode === 'vertical' && !hidden ? 'block' : 'none'}}
                         selectedKeys={[selectedKeys]}
-                        mode={sidebarMode}
+                        mode="vertical"
                     >
                         {this.renderMenus()}
                     </Menu>
-
 
                 </div>
             </div>
