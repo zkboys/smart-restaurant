@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MpPassword = new Schema({
-    user_id: {type: String},
+    account_id: {type: String},
     password: {type: String},
     salt: {type: String},
 });

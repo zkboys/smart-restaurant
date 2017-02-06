@@ -4,6 +4,13 @@ exports.errorMessages = {
     loginNameInvalid: [1002, '登录名不合法'],
     loginNameIsUsed: [1003, '登录名已被使用'],
 
+    mpNameCanNotBeNull: [1004, '用户名不能为空'],
+    mpAccountCanNotBeNull: [1005, '账号不能为空'],
+    mpNameInvalid: [1006, '用户名不合法'],
+    mpAccountInvalid: [1007, '账号不合法'],
+    mpAccountLengthInvalid: [1008, '账号至少需要2个字符'],
+    mpAccountIsUsed: [1009, '账号名已被占用'],
+
     passCanNotBeNull: [2000, '密码不能为空'],
     passInvalid: [2001, '密码不可用'],
     oldPassCanNotBeNull: [2002, '原密码不能为空'],
@@ -33,5 +40,6 @@ exports.errorMessages = {
     versionInvalid: [6002, '无效的版本号'],
     timestampInvalid: [6003, '无效的timestamp'],
     signInvalid: [6004, '无效的签名'],
+
 
 }

@@ -56,7 +56,7 @@ class Header extends Component {
         const {collapsed, toggleSideBar, user, current} = this.props;
         const handleExit = this.handleExit;
         const logoClass = collapsed ? 'collapsed' : '';
-        const logo = collapsed ? '智云' : '智能云餐厅管理系统';
+        const logo = collapsed ? '餐饮' : '餐饮系统';
         return (
             <div className="app-header">
                 <div className={`logo ${logoClass}`}>

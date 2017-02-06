@@ -1,7 +1,7 @@
 export default [
     {
-        path: '/merchant/accounts',
-        asyncComponent: './account/AccountList',
+        path: '/merchant/users',
+        asyncComponent: './user/UserList',
     },
     {
         path: '/merchant/mch/menus',

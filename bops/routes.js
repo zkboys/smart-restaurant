@@ -10,6 +10,8 @@ const organization = require('./controller/organization');
 const user = require('./controller/user');
 const role = require('./controller/role');
 
+const mpUser = require('./controller/mp_user');
+
 router.get('/', userRequired, function (req, res) {
     res.render('index');
 });
@@ -55,6 +57,11 @@ router.get('/api/organization/roles/name/:name', userRequired, role.getByRoleNam
 router.post('/api/organization/roles', userRequired, permission('role-add'), role.addAndSave);
 router.put('/api/organization/roles', userRequired, permission('role-update'), role.update);
 router.delete('/api/organization/roles', userRequired, permission('role-delete'), role.delete);
+
+// mp account
+
+router.post('/api/merchant/accounts', userRequired, permission('mp-user-add'), mpUser.addAndSave);
+
 
 router.get('*', userRequired, function (req, res, next) {
     //  根据约定 区分不同得请求类型，返回不同的数据。

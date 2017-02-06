@@ -176,11 +176,20 @@ class AccountList extends Component {
     }
 
     handleAddAccount = (values) => {
-        // TODO：添加  name account password  type is_locked
-        console.log('add', values);
-        this.setState({
-            accountPopoverVisible: false,
-        });
+        const {actions} = this.props;
+        actions.addMpUser(
+            {
+                name: values.name,
+                account: values.account,
+            },
+            () => {
+                this.setState({
+                    accountPopoverVisible: false,
+                });
+            },
+            () => {
+
+            });
     }
 
     accountFormItems = [
