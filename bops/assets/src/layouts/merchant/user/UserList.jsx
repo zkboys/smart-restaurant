@@ -14,6 +14,10 @@ class AccountList extends Component {
 
     state = {
         accountPopoverVisible: false,
+        editUser: {
+            name: '123',
+            account: '111',
+        }
     };
 
     accountColumns = [
@@ -213,8 +217,11 @@ class AccountList extends Component {
             label: '账号',
             placeholder: '请输入手机或邮箱',
             fieldDecorator: {
+                // initialValue: '默认值', // TODO: 如果是编辑，这里注意
                 rules: [
+                    {required: true, message: '账号不能为空'},
                     ValidationRule.checkMpAccountExist(),
+                    // ValidationRule.checkMpAccountExist(this.state.editUser.account), // TODO: 如果是编辑，这里注意
                 ],
             },
         }
