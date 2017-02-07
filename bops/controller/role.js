@@ -38,6 +38,9 @@ exports.delete = controllerDecorator(async function (req, res, next) {
 
 exports.update = controllerDecorator(async function (req, res, next) {
     const role = req.body;
+    if (!role.id) {
+        role.id = role._id;
+    }
     const updatedRole = await RoleService.updateRole(role);
     res.send(updatedRole);
 });

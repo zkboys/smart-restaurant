@@ -15,6 +15,7 @@ const UserSchema = new Schema({
     is_first_login: {type: Boolean, default: true},
     org_key: {type: String}, // 这里不要使用org_id ，org_id总是变化，key是不变的。
     is_locked: {type: Boolean, default: false},
+    is_admin: {type: Boolean, default: false},
 });
 
 UserSchema.virtual('avatar_url').get(function () {

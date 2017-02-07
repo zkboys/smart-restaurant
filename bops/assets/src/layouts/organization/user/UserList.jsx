@@ -107,7 +107,7 @@ export class UserList extends Component {
             dataIndex: 'is_locked',
             key: 'is_locked',
             render: (text, record) => {
-                if (record.loginname === 'admin') return '';
+                if (record.is_admin) return '';
                 const id = record._id;
                 const loading = this.props.switchingLock[id];
                 const loadingChildren = <Icon type="loading"/>;
@@ -136,9 +136,7 @@ export class UserList extends Component {
             title: '操作',
             key: 'operator',
             render: (text, record) => {
-                if (record.loginname === 'admin') { // 硬编码，管理员不可操作
-                    return '';
-                }
+                if (record.is_admin) return ''; //管理员不可操作
 
                 const id = record._id;
                 const items = [
@@ -146,7 +144,8 @@ export class UserList extends Component {
                         loading: this.props.editingId === id,
                         label: '编辑',
                         permission: 'user-update',
-                        onClick: () => {
+                        onClick: (e) => {
+                            e.preventDefault();
                             this.handleEdit(record);
                         },
                     },

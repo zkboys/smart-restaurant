@@ -284,11 +284,14 @@ class AccountList extends Component {
             pageSize,
             currentPage,
             mpUsers: {results: users, totalCount},
+            currentUser,
         } = this.props;
 
         const {editingMpUser, accountModalVisible, accountModalType} = this.state;
 
         const accountModalTitle = accountModalType === 'edit' ? '编辑用户' : '添加用户';
+
+        const showAddBtn = currentUser && currentUser.permissions && currentUser.permissions.indexOf('mp-user-add') > -1;
 
         return (
             <div className="merchant-list">
@@ -305,7 +308,10 @@ class AccountList extends Component {
                     </Form>
                 </QueryBar>
                 <div className="tool-bar">
-                    <Button type="primary" onClick={this.handleAccountAdd}><Icon type="plus-circle-o"/>添加用户</Button>
+                    {showAddBtn ?
+                        <Button type="primary" onClick={this.handleAccountAdd}><Icon type="plus-circle-o"/>添加用户</Button>
+                        : null
+                    }
                 </div>
                 <Table
                     loading={gettingMpUser}
@@ -394,5 +400,6 @@ export function mapStateToProps(state) {
     return {
         ...state.app,
         ...state.mpUser,
+        currentUser: state.app.user,
     };
 }

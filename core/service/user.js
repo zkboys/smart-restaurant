@@ -99,6 +99,22 @@ exports.resetUserPass = async function (userId) {
 }
 
 exports.getUserPermissions = async function (user) {
+
+    if (user.is_admin) {
+        const menus = await MenuProxy.getAll();
+        const permissions = [];
+        if (menus) {
+            menus.forEach(menu => {
+                permissions.push(menu.key);
+                if (menu.functions && menu.functions.length) {
+                    menu.functions.forEach(f => {
+                        permissions.push(f.key);
+                    });
+                }
+            });
+        }
+        return permissions;
+    }
     const role = await RoleProxy.getById(user.role_id);
 
     if (role) {

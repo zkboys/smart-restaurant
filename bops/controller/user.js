@@ -53,6 +53,7 @@ exports.toggleLock = controllerDecorator(async function (req, res, next) {
 
 exports.update = controllerDecorator(async function (req, res, next) {
     const user = req.body;
+    if (!user.id) user.id = user._id;
     const updatedUser = await UserService.updateUser(user);
     res.send(updatedUser);
 });
