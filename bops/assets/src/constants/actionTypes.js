@@ -61,9 +61,14 @@ export const REDO_MENU = 'REDO_MENU';
 export const SAVE_MENU = 'SAVE_MENU';
 
 // mp account
-
 export const ADD_MP_USER = 'ADD_MP_USER';
 export const UPDATE_MP_USER = 'UPDATE_MP_USER';
 export const DELETE_MP_USER = 'DELETE_MP_USER';
 export const GET_MP_USERS_BY_PARAMS = 'GET_MP_USERS_BY_PARAMS';
 export const TOGGLE_LOCK_MP_USER = 'TOGGLE_LOCK_MP_USER';
+
+// mp merchant
+
+export const ADD_MCH = 'ADD_MCH';
+export const UPDATE_MCH = 'UPDATE_MCH';
+export const DELETE_MCH = 'DELETE_MCH';

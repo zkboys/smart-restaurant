@@ -18,7 +18,18 @@ class AccountList extends Component {
         editingMpUser: {
             name: '',
             account: '',
-        }
+        },
+
+        mchModalVisible: false,
+        mchModalType: 'add', // edit
+        editingMch: {
+            name: '',
+            logo: '',
+            mobile: '',
+            tel: '',
+            state: '',
+            owner_id: '',
+        },
     };
 
     componentDidMount() {
@@ -28,7 +39,14 @@ class AccountList extends Component {
     accountColumns = [
         {title: '账号', dataIndex: 'account', key: 'account'},
         {title: '用户名', dataIndex: 'name', key: 'name'},
-        {title: '品牌个数', dataIndex: 'mchCount', key: 'mchCount'},
+        {
+            title: '品牌个数',
+            dataIndex: 'mchCount',
+            key: 'mchCount',
+            render: (text, record) => {
+                return record.merchants ? record.merchants.length : 0;
+            },
+        },
         {
             title: '管理员',
             dataIndex: 'is_admin',
@@ -74,13 +92,13 @@ class AccountList extends Component {
                 const items = [
                     {
                         label: '编辑',
-                        permission: 'mp-account-update',
+                        permission: 'mp-user-update',
                         onClick: (e) => this.handleAccountEdit(e, record),
                     },
                     {
                         loading: this.props.deletingMpUser[id],
                         label: '删除',
-                        permission: 'mp-account-delete',
+                        permission: 'mp-user-delete',
                         confirm: {
                             title: `您确定要删除“${record.name}”？`,
                         },
@@ -89,8 +107,8 @@ class AccountList extends Component {
 
                     {
                         label: '添加品牌',
-                        permission: 'mp-add-mch',
-                        onClick: () => alert('add mch'),
+                        permission: 'mp-mch-add',
+                        onClick: (e) => this.handleMchAdd(e, record),
                     },
                 ];
 
@@ -101,6 +119,10 @@ class AccountList extends Component {
 
     mchColumns = [
         {title: '品牌名称', dataIndex: 'name', key: 'name'},
+        {title: '品牌logo', dataIndex: 'logo', key: 'logo'},
+        {title: '联系电话', dataIndex: 'mobile', key: 'mobile'},
+        {title: '联系座机', dataIndex: 'tel', key: 'tel'},
+        {title: '状态', dataIndex: 'state', key: 'state'},
         {title: '门店个数', dataIndex: 'storeCount', key: 'storeCount'},
         {
             title: '操作',
@@ -110,13 +132,13 @@ class AccountList extends Component {
                     {
                         loading: false,
                         label: '编辑',
-                        permission: 'mp-account-update',
+                        permission: 'mch-update',
                         onClick: () => alert('update'),
                     },
                     {
                         loading: false,
                         label: '删除',
-                        permission: 'mp-account-delete',
+                        permission: 'mch-delete',
                         confirm: {
                             title: `您确定要删除“${record.name}”？`,
                         },
@@ -125,7 +147,7 @@ class AccountList extends Component {
                     {
                         loading: false,
                         label: '添加门店',
-                        permission: 'mp-add-mch',
+                        permission: 'store-add',
                         onClick: () => alert('add mch'),
                     },
                 ];
@@ -133,12 +155,6 @@ class AccountList extends Component {
                 return (<Operator items={items}/>);
             },
         },
-    ];
-
-    mchData = [
-        {key: 1, name: '品牌1', storeCount: 3,},
-        {key: 2, name: '品牌2', storeCount: 2,},
-        {key: 3, name: '品牌3', storeCount: 1},
     ];
 
     storeColumns = [
@@ -276,6 +292,73 @@ class AccountList extends Component {
         });
     }
 
+    handleMchAdd = (e, mpUser) => {
+        e.preventDefault();
+        this.setState({
+            mchModalType: 'add',
+            mchModalVisible: true,
+            editingMch: {
+                name: '',
+                logo: '',
+                mobile: '',
+                tel: '',
+                state: '',
+                owner_id: mpUser.id,
+            }
+        });
+    }
+
+    handleMchSubmit = (e) => {
+        e.preventDefault();
+        const {savingOrUpdatingMch, form: {validateFieldsAndScroll}, actions} = this.props;
+        const {mchModalType, editingMch} = this.state;
+        if (savingOrUpdatingMch) return;
+        const fields = [
+            'mchName',
+            'mchLogo',
+            'mchMobile',
+            'mchTel',
+        ];
+        validateFieldsAndScroll(fields, (errors, values) => {
+            if (errors) return;
+
+            const id = editingMch.id;
+            const owner_id = editingMch.owner_id;
+            const name = values.mchName;
+            const logo = values.mchLogo;
+            const mobile = values.mchMobile;
+            const tel = values.mchTel;
+            const state = 'verified';
+
+            if (mchModalType === 'edit') {
+                actions.updateMch(
+                    {id, name, logo, mobile, tel,},
+                    () => {
+                        this.setState({
+                            mchModalVisible: false,
+                        });
+                    }
+                );
+            } else {
+                actions.addMch(
+                    {name, logo, mobile, tel, owner_id, state,},
+                    () => {
+                        this.setState({
+                            mchModalVisible: false,
+                        });
+                    }
+                );
+            }
+
+        });
+    }
+
+    handleMchModalCancel = () => {
+        this.setState({
+            mchModalVisible: false,
+        });
+    }
+
     render() {
         const {
             savingOrUpdatingMpUser,
@@ -285,11 +368,23 @@ class AccountList extends Component {
             currentPage,
             mpUsers: {results: users, totalCount},
             currentUser,
+
+            savingOrUpdatingMch,
         } = this.props;
 
-        const {editingMpUser, accountModalVisible, accountModalType} = this.state;
+        const {
+            accountModalVisible,
+            accountModalType,
+            editingMpUser,
+
+            mchModalVisible,
+            mchModalType,
+            editingMch,
+        } = this.state;
 
         const accountModalTitle = accountModalType === 'edit' ? '编辑用户' : '添加用户';
+        const mchModalTitle = mchModalType === 'edit' ? '编辑品牌' : '添加品牌';
+
 
         const showAddBtn = currentUser && currentUser.permissions && currentUser.permissions.indexOf('mp-user-add') > -1;
 
@@ -319,12 +414,13 @@ class AccountList extends Component {
                     dataSource={users}
                     pagination={false}
                     rowKey={record => record.id}
-                    expandedRowRender={record => (
+                    expandedRowRender={user => (
                         <Table
                             columns={this.mchColumns}
-                            dataSource={this.mchData}
+                            dataSource={user.merchants}
                             pagination={false}
-                            expandedRowRender={record => (
+                            rowKey={merchant => merchant.id}
+                            expandedRowRender={merchant => (
                                 <Table
                                     columns={this.storeColumns}
                                     dataSource={this.storeData}
@@ -352,7 +448,8 @@ class AccountList extends Component {
                         :
                         null
                     }
-                    <Form onSubmit={this.handleAccountSubmit} onReset={() => this.props.form.resetFields()}>
+                    <Form onSubmit={this.handleAccountSubmit}
+                          onReset={() => this.props.form.resetFields(['userAccount', 'userName'])}>
                         <FormItem
                             labelCol={{span: 4}}
                             wrapperCol={{span: 18}}
@@ -387,6 +484,77 @@ class AccountList extends Component {
                         <FormItem wrapperCol={{span: 18, offset: 4}}>
                             <Button type="ghost" style={{marginRight: 8}} htmlType="reset">重置</Button>
                             <Button type="primary" loading={savingOrUpdatingMpUser} htmlType="submit">保存</Button>
+                        </FormItem>
+                    </Form>
+                </Modal>
+
+                <Modal
+                    title={mchModalTitle}
+                    visible={mchModalVisible}
+                    onCancel={this.handleMchModalCancel}
+                    footer=""
+                >
+                    <Form onSubmit={this.handleMchSubmit}
+                          onReset={() => this.props.form.resetFields(['mchName', 'mchLogo', 'mchMobile', 'mchTel', 'mchState'])}>
+                        <FormItem
+                            labelCol={{span: 4}}
+                            wrapperCol={{span: 18}}
+                            label="品牌名称"
+                        >
+                            {getFieldDecorator('mchName', {
+                                initialValue: editingMch.name,
+                                rules: [
+                                    ValidationRule.required('品牌名称'),
+                                ],
+                            })(
+                                <Input placeholder="请输入品牌名称"/>
+                            )}
+                        </FormItem>
+                        <FormItem
+                            labelCol={{span: 4}}
+                            wrapperCol={{span: 18}}
+                            label="品牌logo"
+                        >
+                            {getFieldDecorator('mchLogo', {
+                                initialValue: editingMch.logo,
+                                rules: [
+                                    ValidationRule.required('品牌logo'),
+                                ],
+                            })(
+                                <Input placeholder="请输入品牌logo"/>
+                            )}
+                        </FormItem>
+                        <FormItem
+                            labelCol={{span: 4}}
+                            wrapperCol={{span: 18}}
+                            label="联系电话"
+                        >
+                            {getFieldDecorator('mchMobile', {
+                                initialValue: editingMch.mobile,
+                                rules: [
+                                    ValidationRule.required('联系电话'),
+                                    ValidationRule.mobile(),
+                                ],
+                            })(
+                                <Input placeholder="请输入联系电话"/>
+                            )}
+                        </FormItem>
+
+                        <FormItem
+                            labelCol={{span: 4}}
+                            wrapperCol={{span: 18}}
+                            label="联系座机"
+                        >
+                            {getFieldDecorator('mchTel', {
+                                initialValue: editingMch.tel,
+                            })(
+                                <Input placeholder="请输入联系座机"/>
+                            )}
+                        </FormItem>
+
+                        <FormItem wrapperCol={{span: 18, offset: 4}}>
+                            <Button type="ghost" style={{marginRight: 8}} htmlType="reset">重置</Button>
+                            <Button type="primary" loading={savingOrUpdatingMch} htmlType="submit">保存</Button>
                         </FormItem>
                     </Form>
                 </Modal>

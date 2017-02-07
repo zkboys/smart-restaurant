@@ -7,8 +7,10 @@ import * as organizationRole from './organization/role';
 import * as organization from './organization/organization';
 import * as menu from './dev/menu';
 import * as mpUser from './merchant/user';
+import * as mch from './merchant/mch';
 
 const actions = {
+    mch,
     mpUser,
     menu,
     organization,

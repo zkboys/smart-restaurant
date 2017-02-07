@@ -12,6 +12,8 @@ const role = require('./controller/role');
 
 const mpUser = require('./controller/mp_user');
 
+const merchant = require('./controller/merchant');
+
 router.get('/', userRequired, function (req, res) {
     res.render('index');
 });
@@ -58,14 +60,29 @@ router.post('/api/organization/roles', userRequired, permission('role-add'), rol
 router.put('/api/organization/roles', userRequired, permission('role-update'), role.update);
 router.delete('/api/organization/roles', userRequired, permission('role-delete'), role.delete);
 
-// mp account
+// mp user account
 router.post('/api/merchant/users', userRequired, permission('mp-user-add'), mpUser.addAndSave);
 router.delete('/api/merchant/users', userRequired, permission('mp-user-delete'), mpUser.delete);
 router.put('/api/merchant/users', userRequired, permission('mp-user-update'), mpUser.update);
 router.put('/api/merchant/users/toggle_lock', userRequired, permission('mp-user-toggle-lock'), mpUser.toggleLock);
 router.get('/api/merchant/users', userRequired, permission('mp-user-search'), mpUser.getByPage);
-
 router.get('/api/merchant/account/:account', userRequired, mpUser.getAccountByAccount);
+
+// mp merchant
+router.post('/api/merchant/mchs', userRequired, permission('mch-add'), merchant.addAndSave);
+router.delete('/api/merchant/mchs', userRequired, permission('mch-delete'), merchant.delete);
+router.put('/api/merchant/mchs', userRequired, permission('mch-update'), merchant.update);
+
+
+
+
+
+
+
+
+
+
+
 
 router.get('*', userRequired, function (req, res, next) {
     //  根据约定 区分不同得请求类型，返回不同的数据。

@@ -42,5 +42,7 @@ exports.errorMessages = {
     timestampInvalid: [6003, '无效的timestamp'],
     signInvalid: [6004, '无效的签名'],
 
-
+    merchantNameCanNotBeNull: [7000, '品牌名称不能为空'],
+    mobileCanNotBeNull: [7001, '手机号码不能为空'],
+    mobileInvalid: [7001, '请输入正确的手机号'],
 }

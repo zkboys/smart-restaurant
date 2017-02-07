@@ -14,6 +14,8 @@ let initialState = {
         results: [],
         totalCount: 0,
     },
+
+    savingOrUpdatingMch: false,
 };
 
 export default handleActions({
@@ -127,6 +129,33 @@ export default handleActions({
             ...state,
             mpUsers,
             switchingLockMpUser: {...state.switchingLockMpUser, [id]: loading},
+        };
+    },
+
+    [types.ADD_MCH](state, action) {
+        const {meta = {}, error, payload} = action;
+        const {sequence = {}} = meta;
+        const savingOrUpdatingMch = sequence.type === 'start';
+
+        if (savingOrUpdatingMch || error) {
+            return {
+                ...state,
+                savingOrUpdatingMch,
+            };
+        }
+
+        const mpUsers = _.cloneDeep(state.mpUsers);
+
+        mpUsers.results.forEach(user => {
+            if (user.id === payload.owner_id) {
+                if (!user.merchants) user.merchants = [];
+                user.merchants.unshift(payload);
+            }
+        });
+        return {
+            ...state,
+            savingOrUpdatingMch,
+            mpUsers,
         };
     },
 }, initialState);

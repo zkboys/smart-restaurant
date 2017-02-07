@@ -45,6 +45,14 @@ require('./mp_password');
 exports.MpPassword = mongoose.model('MpPassword');
 
 
+require('./merchant');
+exports.Merchant = mongoose.model('Merchant');
+
+
+require('./merchant_user');
+exports.MerchantUser = mongoose.model('MerchantUser');
+
+
 
 
 

@@ -11,8 +11,4 @@ const MenuSchema = new Schema({
     functions: {type: Array},
 });
 MenuSchema.index({key: 1}, {unique: true});
-MenuSchema.pre('save', function (next) {
-    this.update_at = new Date();
-    next();
-});
 mongoose.model('Menu', MenuSchema);
