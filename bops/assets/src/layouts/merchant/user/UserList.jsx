@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {Table, Form, Input, Button, Icon, Modal, Switch} from 'antd';
+import {Table, Form, Input, Button, Icon, Modal, Switch, Alert} from 'antd';
 import './style.less';
 import PaginationComponent from '../../../components/pagination/PaginationComponent';
 import QueryBar from '../../../components/QueryBar';
@@ -29,6 +29,14 @@ class AccountList extends Component {
         {title: '账号', dataIndex: 'account', key: 'account'},
         {title: '用户名', dataIndex: 'name', key: 'name'},
         {title: '品牌个数', dataIndex: 'mchCount', key: 'mchCount'},
+        {
+            title: '管理员',
+            dataIndex: 'is_admin',
+            key: 'is_admin',
+            render: (text, record) => {
+                return record.is_admin ? '是' : '否';
+            },
+        },
         {
             title: '是否锁定',
             dataIndex: 'is_locked',
@@ -189,7 +197,7 @@ class AccountList extends Component {
     search = (args) => {
         const {actions, form: {getFieldsValue}, currentPage, pageSize} = this.props;
         let params = {
-            ...getFieldsValue(),
+            ...getFieldsValue(['account']),
             currentPage,
             pageSize,
             ...args,
@@ -249,6 +257,7 @@ class AccountList extends Component {
                     {
                         name: values.userName,
                         account: values.userAccount,
+                        is_admin: true,
                     },
                     () => {
                         this.setState({
@@ -332,6 +341,11 @@ class AccountList extends Component {
                     onCancel={this.handleAccountModalCancel}
                     footer=""
                 >
+                    {accountModalType === 'add' ?
+                        <Alert message="添加的用户默认为管理员，普通用户由商户自行维护" type="info"/>
+                        :
+                        null
+                    }
                     <Form onSubmit={this.handleAccountSubmit} onReset={() => this.props.form.resetFields()}>
                         <FormItem
                             labelCol={{span: 4}}

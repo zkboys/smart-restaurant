@@ -30,9 +30,7 @@ export default handleActions({
         }
 
         const mpUsers = _.cloneDeep(state.mpUsers);
-        console.log(payload);
         mpUsers.results.unshift(payload);
-
         return {
             ...state,
             savingOrUpdatingMpUser,

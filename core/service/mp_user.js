@@ -35,6 +35,7 @@ exports.getByPage = async function (currentPage = 1, pageSize = 10, queries = []
             account: account.account,
             name: user.name,
             is_locked: user.is_locked,
+            is_admin: user.is_admin,
             mchCount: 0, // TODO: 获取品牌，门店相关信息
         }
     });
@@ -86,6 +87,8 @@ exports.add = async function (mpUser) {
 
     const savedMpUser = await MpUserProxy.save({
         name: mpUser.name || mpUser.account,
+        is_admin: mpUser.is_admin || false,
+        is_locked: mpUser.is_locked || false,
     });
 
     const mpUserId = savedMpUser._id;
@@ -106,9 +109,11 @@ exports.add = async function (mpUser) {
     savedMpUser.account = savedMpAccount.account;
 
     return {
-        _id: savedMpUser._id,
+        id: savedMpUser.id,
         name: savedMpUser.name,
         account: savedMpAccount.account,
+        is_locked: savedMpUser.is_locked,
+        is_admin: savedMpUser.is_admin,
         mchCount: 0,
     };
 }
