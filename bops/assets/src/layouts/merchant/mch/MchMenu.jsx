@@ -4,7 +4,6 @@ import './style.less';
 import PaginationComponent from '../../../components/pagination/PaginationComponent';
 import QueryBar from '../../../components/QueryBar';
 import Operator from '../../../components/Operator';
-import FormComponent from '../../../components/FormComponent';
 
 const FormItem = Form.Item;
 

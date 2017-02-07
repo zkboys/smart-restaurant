@@ -34,7 +34,7 @@ exports.getUserByLoginNameAndPass = async function (loginName, pass) {
     if (!isPassOk) {
         throw new ServiceError(message.loginNamePassInvalid);
     }
-    return user;
+    return user.toJSON();
 };
 /**
  * 更新用户密码

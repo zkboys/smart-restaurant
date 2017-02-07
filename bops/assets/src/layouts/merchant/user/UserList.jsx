@@ -1,10 +1,9 @@
 import React, {Component, PropTypes} from 'react';
-import {Table, Form, Input, Button, Popover, Icon} from 'antd';
+import {Table, Form, Input, Button, Icon, Modal} from 'antd';
 import './style.less';
 import PaginationComponent from '../../../components/pagination/PaginationComponent';
 import QueryBar from '../../../components/QueryBar';
 import Operator from '../../../components/Operator';
-import FormComponent from '../../../components/FormComponent';
 
 import ValidationRule from '../../../services/validation-rule';
 
@@ -14,9 +13,11 @@ class AccountList extends Component {
 
     state = {
         accountPopoverVisible: false,
-        editUser: {
-            name: '123',
-            account: '111',
+        accountModalVisible: false,
+        accountModalType: 'add', // edit
+        editingMpUser: {
+            name: '',
+            account: '',
         }
     };
 
@@ -38,7 +39,7 @@ class AccountList extends Component {
                         loading: false,
                         label: '编辑',
                         permission: 'mp-account-update',
-                        onClick: () => alert('update'),
+                        onClick: (e) => this.handleAccountEdit(e, record),
                     },
                     {
                         loading: false,
@@ -62,22 +63,6 @@ class AccountList extends Component {
         },
     ];
 
-    accountData = [
-        {
-            key: 1,
-            name: '明日之星',
-            account: 'asdfasdf@163.com,18611434363',
-            mchCount: 2,
-            is_locked: 1,
-        },
-        {
-            key: 2,
-            name: '哈哈',
-            account: '18611434363',
-            mchCount: 3,
-            is_locked: 0,
-        },
-    ];
     mchColumns = [
         {title: '品牌名称', dataIndex: 'name', key: 'name'},
         {title: '门店个数', dataIndex: 'storeCount', key: 'storeCount'},
@@ -185,56 +170,89 @@ class AccountList extends Component {
         actions.getMpUsersByParams(params);
     }
 
-    handleAddAccount = (values) => {
-        const {actions} = this.props;
-        actions.addMpUser(
-            {
-                name: values.name,
-                account: values.account,
-            },
-            () => {
-                this.setState({
-                    accountPopoverVisible: false,
-                });
-            },
-            () => {
-
-            });
+    handleAccountAdd = (e) => {
+        e.preventDefault();
+        this.setState({
+            accountModalType: 'add',
+            accountModalVisible: true,
+            editingMpUser: {
+                account: '',
+                name: '',
+            }
+        });
     }
 
-    accountFormItems = [
-        {
-            field: 'name',
-            label: '用户名',
-            hasFeedback: true,
-            fieldType: 'input', // TODO 后期用到再扩展，默认为input
-            placeholder: '请输入用户名',
-            fieldDecorator: {
-                // initialValue: '默认值',
-                rules: [
-                    {required: true, message: '用户名不能为空'},
-                ],
-            },
-        },
-        {
-            field: 'account',
-            label: '账号',
-            placeholder: '请输入手机或邮箱',
-            fieldDecorator: {
-                // initialValue: '默认值', // TODO: 如果是编辑，这里注意
-                rules: [
-                    {required: true, message: '账号不能为空'},
-                    ValidationRule.checkMpAccountExist(),
-                    // ValidationRule.checkMpAccountExist(this.state.editUser.account), // TODO: 如果是编辑，这里注意
-                ],
-            },
-        }
-    ];
+    handleAccountEdit = (e, editingMpUser) => {
+        e.preventDefault();
+        this.setState({
+            accountModalType: 'edit',
+            accountModalVisible: true,
+            editingMpUser: editingMpUser,
+        });
+    }
 
+    handleAccountSubmit = (e) => {
+        e.preventDefault();
+        const {savingOrUpdatingMpUser, form: {validateFieldsAndScroll}, actions} = this.props;
+        const {accountModalType, editingMpUser} = this.state;
+        if (savingOrUpdatingMpUser) return;
+        const fields = [
+            'userAccount',
+            'userName',
+        ];
+        validateFieldsAndScroll(fields, (errors, values) => {
+            if (errors) return;
+
+            if (accountModalType === 'edit') {
+                actions.updateMpUser(
+                    {
+                        id: editingMpUser.id,
+                        name: values.userName,
+                        account: values.userAccount,
+                    },
+                    () => {
+                        this.setState({
+                            accountModalVisible: false,
+                        });
+                    }
+                );
+            } else {
+                actions.addMpUser(
+                    {
+                        name: values.userName,
+                        account: values.userAccount,
+                    },
+                    () => {
+                        this.setState({
+                            accountModalVisible: false,
+                        });
+                    }
+                );
+            }
+
+        });
+    }
+
+    handleAccountModalCancel = () => {
+        this.setState({
+            accountModalVisible: false,
+        });
+    }
 
     render() {
-        const {form: {getFieldDecorator}, pageSize, currentPage, mpUsers: {results: users, totalCount},} = this.props;
-        const {accountPopoverVisible} = this.state;
+        const {
+            savingOrUpdatingMpUser,
+            gettingMpUser,
+            form: {getFieldDecorator},
+            pageSize,
+            currentPage,
+            mpUsers: {results: users, totalCount},
+        } = this.props;
+
+        const {editingMpUser, accountModalVisible, accountModalType} = this.state;
+
+        const accountModalTitle = accountModalType === 'edit' ? '编辑账号' : '添加账号';
+
         return (
             <div className="merchant-list">
                 <QueryBar>
@@ -251,28 +269,14 @@ class AccountList extends Component {
                     </Form>
                 </QueryBar>
                 <div className="tool-bar">
-                    <Popover
-                        placement="bottomLeft"
-                        title="添加顶级"
-                        visible={accountPopoverVisible}
-                        onVisibleChange={accountPopoverVisible => this.setState({accountPopoverVisible})}
-                        trigger="click"
-                        content={
-                            <FormComponent
-                                formItems={this.accountFormItems}
-                                width={300}
-                                onSubmit={this.handleAddAccount}
-                            />
-                        }>
-                        <Button type="primary"><Icon type="plus-circle-o"/>添加账号</Button>
-                    </Popover>
-
+                    <Button type="primary" onClick={this.handleAccountAdd}><Icon type="plus-circle-o"/>添加账号</Button>
                 </div>
                 <Table
+                    loading={gettingMpUser}
                     columns={this.accountColumns}
                     dataSource={users}
                     pagination={false}
-                    rowKey={record => record._id}
+                    rowKey={record => record.id}
                     expandedRowRender={record => (
                         <Table
                             columns={this.mchColumns}
@@ -295,6 +299,50 @@ class AccountList extends Component {
                     totalCount={totalCount}
                     onChange={this.handlePageChange}
                 />
+                <Modal
+                    title={accountModalTitle}
+                    visible={accountModalVisible}
+                    onCancel={this.handleAccountModalCancel}
+                    footer=""
+                >
+                    <Form onSubmit={this.handleAccountSubmit} onReset={() => this.props.form.resetFields()}>
+                        <FormItem
+                            labelCol={{span: 4}}
+                            wrapperCol={{span: 18}}
+                            label="账号"
+                        >
+                            {getFieldDecorator('userAccount', {
+                                initialValue: editingMpUser.account,
+                                rules: [
+                                    ValidationRule.required('账号'),
+                                    ValidationRule.account(),
+                                    ValidationRule.checkMpAccountExist(accountModalType === 'edit' ? editingMpUser.account : ''),
+                                ],
+                            })(
+                                <Input placeholder="请输入账号" disabled={accountModalType === 'edit'}/>
+                            )}
+                        </FormItem>
+                        <FormItem
+                            labelCol={{span: 4}}
+                            wrapperCol={{span: 18}}
+                            label="用户名"
+                        >
+                            {getFieldDecorator('userName', {
+                                initialValue: editingMpUser.name,
+                                rules: [
+                                    ValidationRule.required('用户名'),
+                                ],
+                            })(
+                                <Input placeholder="请输入用户名"/>
+                            )}
+                        </FormItem>
+
+                        <FormItem wrapperCol={{span: 18, offset: 4}}>
+                            <Button type="ghost" style={{marginRight: 8}} htmlType="reset">重置</Button>
+                            <Button type="primary" loading={savingOrUpdatingMpUser} htmlType="submit">保存</Button>
+                        </FormItem>
+                    </Form>
+                </Modal>
             </div>
         );
     }

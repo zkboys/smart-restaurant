@@ -29,10 +29,9 @@ exports.getByPage = async function (currentPage = 1, pageSize = 10, queries = []
     const userIds = accounts.map(acc => acc.user_id);
     const users = await MpUserProxy.getByIds(userIds);
     const results = accounts.map(account => {
-        console.log(account);
-        const user = users.find(u => u._id == account.user_id);
+        const user = users.find(u => u.id == account.user_id);
         return {
-            _id: account._id,
+            id: account.id,
             account: account.account,
             name: user.name,
             mchCount: 0, // TODO: 获取品牌，门店相关信息

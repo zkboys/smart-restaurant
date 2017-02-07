@@ -1,8 +1,8 @@
 import {createAction} from 'redux-actions';
-import {ADD_MP_USER, GET_MP_USERS_BY_PARAMS} from '../../constants/actionTypes';
+import * as types from '../../constants/actionTypes';
 import * as mpUserService from '../../services/merchant/user';
 
-export const addMpUser = createAction(ADD_MP_USER,
+export const addMpUser = createAction(types.ADD_MP_USER,
     async(params) => await mpUserService.add(params),
     (params, resolved, rejected) => {
         return {
@@ -14,7 +14,20 @@ export const addMpUser = createAction(ADD_MP_USER,
     }
 );
 
-export const getMpUsersByParams = createAction(GET_MP_USERS_BY_PARAMS,
+
+export const updateMpUser = createAction(types.UPDATE_MP_USER,
+    async(params) => await mpUserService.update(params),
+    (params, resolved, rejected) => {
+        return {
+            params,
+            resolved,
+            rejected,
+            autoTipSuccess: '修改成功！',
+        };
+    }
+);
+
+export const getMpUsersByParams = createAction(types.GET_MP_USERS_BY_PARAMS,
     async(params) => await mpUserService.getByParams(params),
     (params, resolved, rejected) => {
         return {

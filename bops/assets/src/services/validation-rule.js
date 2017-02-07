@@ -16,6 +16,18 @@ export default {
             },
         };
     },
+
+    account(message) {
+        return {
+            validator(rule, value, callback) {
+                if (value && !(/^[a-zA-Z0-9\-_]+$/i).test(value)) {
+                    callback(new Error(message || TipMessage.accountFormatError));
+                } else {
+                    callback();
+                }
+            },
+        };
+    },
     /**
      * 判断登录名是否重复
      * @param ignoreValues {Array} 这些名字不进行检测，用于修改的情况。
