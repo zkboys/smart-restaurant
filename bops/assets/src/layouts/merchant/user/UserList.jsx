@@ -279,12 +279,11 @@ class AccountList extends Component {
 
         const {editingMpUser, accountModalVisible, accountModalType} = this.state;
 
-        const accountModalTitle = accountModalType === 'edit' ? '编辑账号' : '添加账号';
+        const accountModalTitle = accountModalType === 'edit' ? '编辑用户' : '添加用户';
 
         return (
             <div className="merchant-list">
                 <QueryBar>
-
                     <Form inline onSubmit={this.handleSubmit}>
                         <FormItem label="账号">
                             {getFieldDecorator('account')(
@@ -297,7 +296,7 @@ class AccountList extends Component {
                     </Form>
                 </QueryBar>
                 <div className="tool-bar">
-                    <Button type="primary" onClick={this.handleAccountAdd}><Icon type="plus-circle-o"/>添加账号</Button>
+                    <Button type="primary" onClick={this.handleAccountAdd}><Icon type="plus-circle-o"/>添加用户</Button>
                 </div>
                 <Table
                     loading={gettingMpUser}
