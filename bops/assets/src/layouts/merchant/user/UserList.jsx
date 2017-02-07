@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {Table, Form, Input, Button, Icon, Modal} from 'antd';
+import {Table, Form, Input, Button, Icon, Modal, Switch} from 'antd';
 import './style.less';
 import PaginationComponent from '../../../components/pagination/PaginationComponent';
 import QueryBar from '../../../components/QueryBar';
@@ -29,29 +29,57 @@ class AccountList extends Component {
         {title: '账号', dataIndex: 'account', key: 'account'},
         {title: '用户名', dataIndex: 'name', key: 'name'},
         {title: '品牌个数', dataIndex: 'mchCount', key: 'mchCount'},
-        {title: '是否锁定', dataIndex: 'is_locked', key: 'is_locked'},
+        {
+            title: '是否锁定',
+            dataIndex: 'is_locked',
+            key: 'is_locked',
+            render: (text, record) => {
+                const id = record.id;
+                const loading = this.props.switchingLockMpUser[id];
+                const loadingChildren = <Icon type="loading"/>;
+                let checkedChildren = '是';
+                let unCheckedChildren = '否';
+
+                if (loading) {
+                    checkedChildren = loadingChildren;
+                    unCheckedChildren = loadingChildren;
+                }
+
+                return (
+                    <Switch
+                        unCheckedChildren={unCheckedChildren}
+                        checkedChildren={checkedChildren}
+                        checked={record.is_locked}
+                        onChange={(checked) => {
+                            if (loading) return;
+                            this.props.actions.toggleMpUserLock({id, isLocked: !checked});
+                        }}
+                    />
+                );
+            },
+        },
         {
             title: '操作',
             key: 'operator',
             render: (text, record) => {
+                const id = record.id;
                 const items = [
                     {
-                        loading: false,
                         label: '编辑',
                         permission: 'mp-account-update',
                         onClick: (e) => this.handleAccountEdit(e, record),
                     },
                     {
-                        loading: false,
+                        loading: this.props.deletingMpUser[id],
                         label: '删除',
                         permission: 'mp-account-delete',
                         confirm: {
                             title: `您确定要删除“${record.name}”？`,
                         },
-                        onClick: () => alert('delete'),
+                        onClick: () => this.props.actions.deleteMpUser({id}),
                     },
+
                     {
-                        loading: false,
                         label: '添加品牌',
                         permission: 'mp-add-mch',
                         onClick: () => alert('add mch'),

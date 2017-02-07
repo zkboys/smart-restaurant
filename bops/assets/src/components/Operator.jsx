@@ -33,7 +33,7 @@ class Operator extends Component {
             let hasPer = true;
 
             if (loading) {
-                const labelWidth = this.label[i].offsetWidth;
+                const labelWidth = this.label[i] ? this.label[i].offsetWidth : 'auto';
                 label = <span style={{display: 'inline-block', width: labelWidth, textAlign: 'center'}}>{this.loadingIcon}</span>;
             } else {
                 label = <span ref={v => this.label[i] = v}>{label}</span>;

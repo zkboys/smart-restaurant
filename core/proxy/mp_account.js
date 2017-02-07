@@ -5,6 +5,10 @@ class MpAccountProxy extends BaseProxy {
     getByAccount(account) {
         return this.model.findOne({'account': new RegExp('^' + account + '$', "i")});
     }
+
+    deleteByMpUserId(mpUserId) {
+        return this.model.findOneAndUpdate({user_id: mpUserId}, {is_deleted: true});
+    }
 }
 
 exports = module.exports = new MpAccountProxy(Model);

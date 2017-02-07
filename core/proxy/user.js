@@ -15,11 +15,11 @@ class UserProxy extends BaseProxy {
     }
 
     lock(id) {
-        return this.model.findOneAndUpdate({_id: id}, {is_locked: true, update_at: new Date()});
+        return this.model.findOneAndUpdate({_id: id}, {is_locked: true});
     }
 
     unlock(id) {
-        return this.model.findOneAndUpdate({_id: id}, {is_locked: false, update_at: new Date()})
+        return this.model.findOneAndUpdate({_id: id}, {is_locked: false})
     }
 }
 

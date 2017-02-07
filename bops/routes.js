@@ -60,7 +60,11 @@ router.delete('/api/organization/roles', userRequired, permission('role-delete')
 
 // mp account
 router.post('/api/merchant/users', userRequired, permission('mp-user-add'), mpUser.addAndSave);
+router.delete('/api/merchant/users', userRequired, permission('mp-user-delete'), mpUser.delete);
+router.put('/api/merchant/users', userRequired, permission('mp-user-update'), mpUser.update);
+router.put('/api/merchant/users/toggle_lock', userRequired, permission('mp-user-toggle-lock'), mpUser.toggleLock);
 router.get('/api/merchant/users', userRequired, permission('mp-user-search'), mpUser.getByPage);
+
 router.get('/api/merchant/account/:account', userRequired, mpUser.getAccountByAccount);
 
 router.get('*', userRequired, function (req, res, next) {

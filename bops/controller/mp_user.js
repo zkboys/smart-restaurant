@@ -7,6 +7,26 @@ exports.addAndSave = controllerDecorator(async function (req, res, next) {
     res.send(savedMpUser);
 });
 
+
+exports.delete = controllerDecorator(async function (req, res, next) {
+    const id = req.body.id;
+    await MpUserService.deleteById(id);
+    res.sendSuccess();
+});
+
+exports.toggleLock = controllerDecorator(async function (req, res, next) {
+    const id = req.body.id;
+    const isLocked = req.body.isLocked;
+    const user = await MpUserService.toggleLock(id, isLocked);
+    res.send(user);
+});
+
+exports.update = controllerDecorator(async function (req, res, next) {
+    const user = req.body;
+    const updatedUser = await MpUserService.update(user);
+    res.send(updatedUser);
+});
+
 exports.getAccountByAccount = controllerDecorator(async function (req, res, next) {
     const account = req.params.account;
     const existedAccount = await MpUserService.getAccountByAccount(account);

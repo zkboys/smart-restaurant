@@ -21,8 +21,7 @@ exports = module.exports = class BaseProxy {
     }
 
     update(data) {
-        data.update_at = new Date();
-        return this.model.findOneAndUpdate({_id: data._id}, data);
+        return this.model.findOneAndUpdate({_id: data.id}, data);
     };
 
     save(data) {

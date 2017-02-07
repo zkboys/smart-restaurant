@@ -23,9 +23,4 @@ UserSchema.virtual('avatar_url').get(function () {
 
 UserSchema.index({loginname: 1}, {unique: true});
 
-UserSchema.pre('save', function (next) {
-    this.update_at = new Date();
-    next();
-});
-
 mongoose.model('User', UserSchema);

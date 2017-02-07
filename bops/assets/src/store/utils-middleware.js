@@ -11,6 +11,7 @@ export default function utilsMiddleware({dispatch}) {
 
         // error handle
         if (autoTipError && error) {
+            console.error(payload);
             let text = autoTipError;
             if (payload.type === 'http') {
                 if (text === '未知系统错误') {

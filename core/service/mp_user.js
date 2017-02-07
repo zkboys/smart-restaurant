@@ -31,13 +31,32 @@ exports.getByPage = async function (currentPage = 1, pageSize = 10, queries = []
     const results = accounts.map(account => {
         const user = users.find(u => u.id == account.user_id);
         return {
-            id: account.id,
+            id: user.id,
             account: account.account,
             name: user.name,
+            is_locked: user.is_locked,
             mchCount: 0, // TODO: 获取品牌，门店相关信息
         }
     });
     return {results, totalCount}
+};
+
+exports.deleteById = async function (userId) {
+    // FIXME: 多账号，这里将会是个问题，这里只删除了一个账号
+    await MpAccountProxy.deleteByMpUserId(userId);
+    return await MpUserProxy.deleteById(userId);
+};
+
+
+exports.toggleLock = async function (userId, isLocked) {
+    if (isLocked) {
+        return await MpUserProxy.unlock(userId);
+    }
+    return await MpUserProxy.lock(userId);
+};
+
+exports.update = async function (user) {
+    return await MpUserProxy.update(user);
 };
 
 exports.add = async function (mpUser) {
