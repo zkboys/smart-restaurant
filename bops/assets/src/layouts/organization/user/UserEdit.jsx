@@ -286,8 +286,8 @@ class UserEdit extends Component {
 export const LayoutComponent = Form.create()(UserEdit);
 export function mapStateToProps(state) {
     return {
-        ...state.organizationUser,
         ...state.organizationRole,
+        ...state.organizationUser,
         ...state.organization,
     };
 }

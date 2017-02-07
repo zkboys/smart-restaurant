@@ -4,25 +4,25 @@ exports = module.exports = class BaseProxy {
     }
 
     getById(id) {
-        return this.model.findOne({_id: id}).lean();
+        return this.model.findOne({_id: id});
     }
 
     getByIds(ids) {
-        return this.model.find({'_id': {'$in': ids}}).lean();
+        return this.model.find({'_id': {'$in': ids}});
     };
 
 
     deleteById(id) {
-        return this.model.findOneAndUpdate({_id: id}, {is_deleted: true, update_at: new Date()}).lean();
+        return this.model.findOneAndUpdate({_id: id}, {is_deleted: true, update_at: new Date()});
     }
 
     removeById(id) {
-        return this.model.remove({_id: id}).lean();
+        return this.model.remove({_id: id});
     }
 
     update(data) {
         data.update_at = new Date();
-        return this.model.findOneAndUpdate({_id: data._id}, data).lean();
+        return this.model.findOneAndUpdate({_id: data._id}, data);
     };
 
     save(data) {
@@ -30,7 +30,7 @@ exports = module.exports = class BaseProxy {
     }
 
     getAll() {
-        return this.model.find().lean();
+        return this.model.find();
     }
 
     getByPage(currentPage = 1, pageSize = 10, queries = {}) {
@@ -40,7 +40,7 @@ exports = module.exports = class BaseProxy {
             query[v] = new RegExp(queries[v]);
         });
         query.is_deleted = false;
-        return this.model.find(query, '', options).lean();
+        return this.model.find(query, '', options);
     }
 
     getCountByQuery(queries = {}) {
@@ -59,6 +59,6 @@ exports = module.exports = class BaseProxy {
         if (query.is_deleted === undefined) {
             query.is_deleted = false;
         }
-        return this.model.find(query, '', opt).lean();
+        return this.model.find(query, '', opt);
     }
 }

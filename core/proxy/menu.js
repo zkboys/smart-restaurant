@@ -12,9 +12,9 @@ class MenuProxy extends BaseProxy {
 
     getMenusByUser(user) {
         if (user.loginname === config.admin_name) { // 登录名为admin的用户拥有所有权限
-            return this.model.find({}).lean();
+            return this.model.find({});
         } else {
-            return this.model.find({'key': {'$in': user.permissions}}).lean();
+            return this.model.find({'key': {'$in': user.permissions}});
         }
     }
 

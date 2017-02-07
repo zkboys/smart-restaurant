@@ -1,7 +1,7 @@
 const VersionUpgradeModel = require('../models').VersionUpgrade;
 
 exports.getVersionUpgradeByCodeAndType = function (versionCode, appType) {
-    return VersionUpgradeModel.findOne({version_code: versionCode, app_type: appType}).lean().lean();
+    return VersionUpgradeModel.findOne({version_code: versionCode, app_type: appType});
 }
 
 exports.addVersionUpgrade = function (versionUpgrade) {

@@ -3,7 +3,7 @@ const BaseProxy = require('./base_proxy');
 
 class MpAccountProxy extends BaseProxy {
     getByAccount(account) {
-        return this.model.findOne({'account': new RegExp('^' + account + '$', "i")}).lean();
+        return this.model.findOne({'account': new RegExp('^' + account + '$', "i")});
     }
 }
 

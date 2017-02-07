@@ -3,7 +3,7 @@ const BaseProxy = require('./base_proxy');
 
 class RoleProxy extends BaseProxy {
     getRoleByNameFromAllRoles(roleName) {
-        return this.model.findOne({'name': new RegExp('^' + roleName + '$', "i")}).lean();
+        return this.model.findOne({'name': new RegExp('^' + roleName + '$', "i")});
     }
 
 }

@@ -1,11 +1,11 @@
 const OauthTokenModel = require('../models').OauthToken;
 
 exports.getOauthTokenByUserId = function (userId) {
-    return OauthTokenModel.findOne({user_id: userId}).lean();
+    return OauthTokenModel.findOne({user_id: userId});
 };
 
 exports.getOauthTokenByAccessToken = function (accessToken) {
-    return OauthTokenModel.findOne({access_token: accessToken}).lean();
+    return OauthTokenModel.findOne({access_token: accessToken});
 }
 
 exports.createOauthToken = function (oauthToken) {
@@ -25,5 +25,5 @@ exports.delete = function (oauthToken) {
 };
 exports.update = function (oauthToken) {
     oauthToken.update_at = new Date();
-    return OauthTokenModel.findOneAndUpdate({_id: oauthToken._id}, oauthToken).lean();
+    return OauthTokenModel.findOneAndUpdate({_id: oauthToken._id}, oauthToken);
 }
