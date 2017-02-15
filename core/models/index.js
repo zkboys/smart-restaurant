@@ -44,14 +44,17 @@ exports.MpAccount = mongoose.model('MpAccount');
 require('./mp_password');
 exports.MpPassword = mongoose.model('MpPassword');
 
-
 require('./merchant');
 exports.Merchant = mongoose.model('Merchant');
-
 
 require('./merchant_user');
 exports.MerchantUser = mongoose.model('MerchantUser');
 
+require('./store');
+exports.Store = mongoose.model('Store');
+
+require('./store_user');
+exports.StoreUser = mongoose.model('StoreUser');
 
 
 

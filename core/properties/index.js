@@ -44,5 +44,17 @@ exports.errorMessages = {
 
     merchantNameCanNotBeNull: [7000, '品牌名称不能为空'],
     mobileCanNotBeNull: [7001, '手机号码不能为空'],
-    mobileInvalid: [7001, '请输入正确的手机号'],
+    mobileInvalid: [7002, '请输入正确的手机号'],
+
+    storeMchIdInvalid: [7003, '请指定门店归属品牌'],
+    storeNameCanNotBeNull: [7004, '门店名称不能为空'],
+    storeTypeCanNotBeNull: [7004, '门店类型不能为空'],
+    storeProvinceCanNotBeNull: [7004, '门店省份不能为空'],
+    storeCityCanNotBeNull: [7004, '门店市不能为空'],
+    storeDistrictCanNotBeNull: [7004, '门店区不能为空'],
+    storeAddressCanNotBeNull: [7004, '门店详细地址不能为空'],
+    storeLngCanNotBeNull: [7004, '门店经度不能为空'],
+    storeLatCanNotBeNull: [7004, '门店纬度不能为空'],
+    storeStateCanNotBeNull: [7004, '门店状态不能为空'],
+    storeExpiredAtCanNotBeNull: [7004, '门店到期时间不能为空'],
 }

@@ -9,6 +9,11 @@ class MerchantUserProxy extends BaseProxy {
     getByUserIds(userIds) {
         return this.model.find({user_id: {$in: userIds}});
     }
+
+    deleteByMchId(mchId) {
+        return this.model.findOneAndUpdate({mch_id: mchId}, {is_deleted: true, update_at: new Date()});
+    }
 }
+
 exports = module.exports = new MerchantUserProxy(Model);
 

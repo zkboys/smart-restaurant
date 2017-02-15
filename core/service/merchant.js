@@ -22,9 +22,32 @@ exports.getByOwnerId = async function (ownerId) {
 
 
 exports.add = async function (merchant) {
+    validateMerchant(merchant);
+
+    const owner_id = merchant.owner_id;
+    const savedMerchant = await MerchantProxy.save(merchant);
+    const mchId = savedMerchant.id;
+    await MerchantUserProxy.save({
+        mch_id: mchId,
+        user_id: owner_id,
+    });
+
+    return savedMerchant;
+};
+
+exports.update = async function (merchant) {
+    validateMerchant(merchant);
+    return await MerchantProxy.update(merchant);
+};
+
+exports.delete = async function (mchId) {
+    await MerchantUserProxy.deleteByMchId(mchId);
+    return await MerchantProxy.deleteById(mchId);
+};
+
+function validateMerchant(merchant) {
     const name = trim(merchant.name);
     const mobile = merchant.mobile;
-    const owner_id = merchant.owner_id;
 
     if (!name) {
         throw new ServiceError(message.merchantNameCanNotBeNull);
@@ -37,12 +60,4 @@ exports.add = async function (merchant) {
     if (!validator.isMobile(mobile)) {
         throw new ServiceError(message.mobileInvalid);
     }
-    const savedMerchant = await MerchantProxy.save(merchant);
-    const mchId = savedMerchant.id;
-    await MerchantUserProxy.save({
-        mch_id: mchId,
-        user_id: owner_id,
-    });
-
-    return savedMerchant;
 }

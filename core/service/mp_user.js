@@ -64,24 +64,15 @@ exports.toggleLock = async function (userId, isLocked) {
     return await MpUserProxy.lock(userId);
 };
 
-exports.update = async function (user) {
-    return await MpUserProxy.update(user);
+exports.update = async function (mpUser) {
+    validateMpUser(mpUser);
+    return await MpUserProxy.update(mpUser);
 };
 
 exports.add = async function (mpUser) {
     const account = trim(mpUser.account);
 
-    if (!account) {
-        throw new ServiceError(message.mpAccountCanNotBeNull);
-    }
-
-    if (account.length < 2) {
-        throw new ServiceError(message.mpAccountLengthInvalid);
-    }
-
-    if (!tools.validateId(account)) {
-        throw new ServiceError(message.mpAccountInvalid);
-    }
+    validateMpUser(mpUser);
 
     const initPass = account[0] + 123456;
     const existedAccount = await MpAccountProxy.getByAccount(account);
@@ -126,6 +117,21 @@ exports.add = async function (mpUser) {
     };
 }
 
+function validateMpUser(mpUser) {
+    const account = trim(mpUser.account);
+
+    if (!account) {
+        throw new ServiceError(message.mpAccountCanNotBeNull);
+    }
+
+    if (account.length < 2) {
+        throw new ServiceError(message.mpAccountLengthInvalid);
+    }
+
+    if (!tools.validateId(account)) {
+        throw new ServiceError(message.mpAccountInvalid);
+    }
+}
 
 
 
